@@ -55,3 +55,32 @@ Having a single Global API means:
 - New front‑ends can be added without duplicating logic.
 - Security, validation, and business rules live in one well‑defined place.
 
+## Typical Requests (High Level)
+
+Some examples of how other systems use the API:
+
+- **Mobile App**
+  - "Give me the newest messages for the home screen."
+  - "Search for messages tagged with 'hope' from the last year."
+- **Website**
+  - "Show all messages in the current series."
+  - "Load details for this specific message page."
+- **Admin Tool**
+  - "Create a new message with this title, date, speaker, and audio URL."
+  - "Update the artwork for this series."
+- **AI Processing Pipeline**
+  - "Read the raw transcript for this message."
+  - "Write back the generated summary, tags, and waveform data."
+
+All of these go through the same Global API, which keeps rules and validation in one place instead of scattering them across multiple apps.
+
+## Key Technologies (High‑Level)
+
+At a technology level (without going into implementation detail), the Global API:
+
+- Is built with **C#/.NET**
+- Uses **MongoDB** as its primary data store
+- Exposes **JSON over HTTPS** for both internal and external clients
+- Uses **JWT authentication** for non‑public operations (e.g., admin changes)
+
+The exact endpoints and schemas are documented in the API repo itself. This page focuses on the role of the API in the overall system.

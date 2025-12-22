@@ -48,6 +48,45 @@ This site is intentionally **overview-focused**. For deep technical details (cod
                 Podcast Platforms
 ```
 
+## Content Creation Flow
+
+At a glance, here is how a sermon moves from the stage to people's phones, browsers, and podcast apps:
+
+```text
+  Sermon is preached
+          |
+          v
+   Audio/Video edited by
+   production team
+          |
+          v
+   Staff upload via
+      Admin Tool
+          |
+          v
+   +-------------------+
+   |    Global API     |
+   | (store details &  |
+   |  audio location)  |
+   +---------+---------+
+             |
+             | triggers / data
+             v
+   +---------------------------+
+   |   AI Processing Pipeline  |
+   |  • transcript & summary   |
+   |  • tags & waveform data   |
+   |  • podcast RSS updates    |
+   +-----------+---------------+
+               |
+     +---------+-----------------------------+
+     |                                       |
+     v                                       v
+Mobile App & Website                  Podcast Platforms
+(read enriched data                    (subscribe to RSS
+  from Global API)                         feed)
+```
+
 ---
 
 ## Sections

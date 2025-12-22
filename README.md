@@ -1,51 +1,53 @@
 # Thrive Architecture
 
-Welcome to the **Thrive Architecture** documentation.
+This repository hosts the **high‑level architecture documentation** for Thrive Church's digital ecosystem.
 
-This repo provides a **high‑level, non‑technical overview** of how Thrive's digital tools work together to deliver sermon, podcast, and church information to people across:
+It backs the public GitHub Pages site:
 
-- The **Thrive mobile app**
-- The **Thrive public website** (`thrive-fl.org`)
-- Internal **admin tools** used by the tech and communications teams
+- **Thrive Architecture (GitHub Pages)**: https://thrivecommunitychurch.github.io/Architecture/
 
-It's designed to answer questions like:
+Use this repo when you want to understand how the **Global API**, **mobile app**, **website**, **admin tool**, and **AI processing pipeline** fit together.
 
-- What are the main pieces of the Thrive system?
-- How do the app, website, and API fit together?
-- Where do sermons and podcasts actually come from?
+## Scope
 
-If you need **deep technical details** (code, endpoints, schemas, deployment scripts), see the individual code repositories. This site is intentionally **overview‑focused**.
+This documentation is intentionally **overview‑focused**:
 
----
+- Explains *what* each major component does
+- Shows *how* data flows between components
+- Avoids deep internal implementation details (code, schemas, deployment scripts)
 
-## Big Picture
+For low‑level technical details, see the individual project repositories listed below.
 
-At a high level, the Thrive ecosystem has five main parts:
+## Contents
 
-1. **Global API** - The central data and services layer for sermons, podcasts, and configuration.
-2. **Mobile App** - The Thrive Church app used by attenders to listen to messages, take notes, and connect.
-3. **Public Website** - The main marketing and information site for the church.
-4. **Admin Tool** - A web tool used by staff to upload and manage sermon and podcast content.
-5. **AI Processing Pipeline** - Behind‑the‑scenes services that generate summaries, tags, and podcast feeds.
+- `docs/`
+  - Markdown pages that describe each major part of the system.
+  - Rendered as the GitHub Pages site linked above.
+- `README.md`
+  - This file, which explains the purpose of the Architecture docs and how to find them.
 
-All of these work together to provide:
+> Note: This repo was originally based on the AWS Lambdas project structure. Any remaining Lambda‑related files here are **historical** and not the source of truth for production code. See the `AWSLambdas` repo below for the active Lambda implementation.
 
-- Fresh, high‑quality sermon and podcast content
-- A consistent experience across app and website
-- Simple tools for staff to keep everything up to date
+## Related Repositories
 
----
+These repositories contain the actual application and infrastructure code that this Architecture site describes:
 
-## Learn More
+- **Global API** – Main C# API for sermons and configuration  
+  `https://github.com/ThriveCommunityChurch/ThriveChurchOfficialAPI`
+- **Admin Tool / Media Tool** – Web UI for staff to upload and manage content  
+  `https://github.com/ThriveCommunityChurch/ThriveAPIMediaTool`
+- **Mobile App** – Thrive Church mobile app (Expo/React Native)  
+  `https://github.com/ThriveCommunityChurch/ThriveChurchExpo`
+- **Public Website** – Public marketing site (`thrive-fl.org`)  
+  `https://github.com/ThriveCommunityChurch/Thrive-FL.org`
+- **AWS Lambdas** – Serverless processing for transcription, enrichment, and podcast feeds  
+  `https://github.com/ThriveCommunityChurch/AWSLambdas`
 
-Use the pages below to explore each area:
+## Contributing
 
-- [System Overview](docs/system-overview.md)
-- [Global API](docs/global-api.md)
-- [Admin Tool](docs/admin-tool.md)
-- [Mobile App](docs/mobile-app.md)
-- [Public Website](docs/website.md)
-- [AI Processing Pipeline](docs/ai-pipeline.md)
+When you change how systems connect (new data flows, new services, or major refactors), update the relevant page(s) in `docs/` so that:
 
-Each page is written to be understandable by both **technical** and **non‑technical** team members.
+- New team members can quickly understand the big picture
+- Architects and leads can discuss trade‑offs using a shared, up‑to‑date view of the system
 
+After updating docs, commit and push to the `master` branch. GitHub Pages will automatically rebuild the site from the `docs/` folder.

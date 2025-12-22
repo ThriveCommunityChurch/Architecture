@@ -56,6 +56,21 @@ After a sermon is uploaded through the **Admin Tool**, the AI pipeline:
 - Triggered automatically when new or updated content is ready.
 - Communicates with the **Global API's** database to read and update sermon records.
 
+## Example End-to-End Flow
+
+1. A staff member uploads a new sermon through the **Admin Tool**.
+2. The **Global API** stores basic details and an audio URL.
+3. An **AWS Lambda** (or similar serverless function) is triggered to:
+   - Download the audio
+   - Call a speech-to-text service to create a transcript
+4. Another step in the pipeline uses the transcript to:
+   - Generate a concise summary in plain language
+   - Suggest topical tags based on the content
+5. The pipeline writes the enriched data (summary, tags, waveform info) back to the **Global API**'s database.
+6. A final step updates the **podcast RSS feed**, which podcast apps read on their own schedule.
+
+From the church's point of view, this all happens automatically after the single upload step.
+
 ## Why It Matters
 
 This pipeline:
@@ -63,6 +78,18 @@ This pipeline:
 - Saves staff time by automating summaries and tagging.
 - Makes it easier for people to **find sermons based on their needs** (e.g., anxiety, marriage, finances).
 - Powers a richer listening experience in the **mobile app** and **podcast platforms**.
+
+## Key Technologies (High-Level)
+
+At a high level, the pipeline uses:
+
+- **AWS Lambda** or equivalent serverless compute
+- **AWS S3** for storing and reading audio files
+- A **speech-to-text service** (e.g., Whisper API) to create transcripts
+- **LLM-based summarization and tagging** to enrich the content
+- The **Global API** and its database as the single source of truth for enriched sermon data
+
+The detailed implementation may evolve over time, but the core idea remains the same: automatically turn raw audio into rich, searchable content and keep all downstream experiences in sync.
 
 From the outside, it's invisible—but it's a key part of what makes the Thrive ecosystem feel smart and cohesive.
 
