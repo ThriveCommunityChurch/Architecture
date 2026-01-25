@@ -8,16 +8,22 @@ After a sermon is uploaded through the **Admin Tool**, the AI pipeline:
 
 1. **Transcribes Audio**
    - Converts the sermon audio into text using Azure Speech-to-Text.
+   - Stores the full transcript in Azure Blob Storage for downstream processing.
 2. **Generates a Message Summary**
-   - Produces a concise, readable summary of the individual message.
+   - Produces a TLDR-style summary (130-180 words) using straightforward, educational tone.
+   - Uses first person plural (we/us/our) perspective, leading with the topic or lesson.
 3. **Assigns Topical Tags**
-   - Attaches meaningful tags (e.g., "hope", "forgiveness", "marriage") based on the content.
+   - Selects from 90+ predefined tags across 17 categories (Theological, Spiritual Disciplines, Personal Growth, Relationships, etc.).
+   - Tags are mapped to C# enums and stored as integers for efficient querying.
 4. **Builds Waveform Data**
-   - Prepares the data needed to draw the audio waveform in the mobile app player.
+   - Creates a 200-point waveform representation for audio player visualization in the mobile app.
 5. **Keeps the Podcast Feed Updated**
-   - Adds or updates podcast episodes in a feed that podcast apps can subscribe to.
+   - Generates podcast-friendly descriptions (two paragraphs, 130-180 words) written for non-church audiences.
+   - Descriptions name specific tensions, avoid speaker names and rhetorical questions, and end with curiosity.
+   - Updates the PodcastEpisodes collection and regenerates the RSS XML feed.
 6. **Generates Series Summaries** *(when series is complete)*
-   - When a series has an end date and all messages are processed, automatically generates a cohesive summary of the entire sermon series.
+   - When a series has an end date and all messages are processed, generates a cohesive series-level summary.
+   - Summaries state insights as present-tense timeless truths with varied openings.
 
 ## Diagram
 
@@ -94,9 +100,9 @@ The pipeline consists of four AWS Lambda functions that work together:
 | Lambda | Purpose |
 |--------|---------|
 | **Transcription Processor** | Downloads audio from S3, transcribes with Azure Speech API, stores transcript in Azure Blob Storage, triggers downstream Lambdas |
-| **Sermon Processor** | Generates message summary, tags, and waveform data using GPT. Triggers Series Summary Processor for completed series |
-| **Series Summary Processor** | Aggregates all message summaries in a series and generates a cohesive series-level summary |
-| **Podcast RSS Generator** | Generates podcast episode descriptions, updates PodcastEpisodes collection, and regenerates RSS XML |
+| **Sermon Processor** | Generates TLDR-style message summary (130-180 words), assigns tags from 90+ categories, creates waveform data. Triggers Series Summary Processor for completed series |
+| **Series Summary Processor** | Aggregates all message summaries in a series and generates a present-tense timeless truths summary |
+| **Podcast RSS Generator** | Generates two-paragraph podcast descriptions for non-church audience (no speaker names), updates PodcastEpisodes collection, regenerates RSS XML |
 
 ## Where It Runs
 
@@ -116,18 +122,18 @@ The pipeline consists of four AWS Lambda functions that work together:
    - Stores the transcript in Azure Blob Storage
    - Invokes the Sermon Processor and Podcast RSS Generator in parallel
 4. The **Sermon Processor** Lambda:
-   - Generates a concise summary using GPT
-   - Generates topical tags using GPT
+   - Generates a TLDR-style summary (straightforward, educational, we/us/our perspective)
+   - Assigns topical tags from 90+ predefined categories
    - Creates waveform data for the audio player
    - Saves all enriched data to MongoDB
    - If the series has an end date, triggers the Series Summary Processor
 5. The **Series Summary Processor** Lambda *(conditional)*:
    - Checks that all messages in the series have summaries
    - Aggregates all message summaries
-   - Generates a cohesive series-level summary
+   - Generates a series summary as present-tense timeless truths
    - Saves to the Series document in MongoDB
 6. The **Podcast RSS Generator** Lambda:
-   - Generates a podcast-friendly description
+   - Generates a two-paragraph description for spiritual seekers (no speaker names)
    - Updates the PodcastEpisodes collection
    - Regenerates the RSS XML feed on S3
 
@@ -138,9 +144,10 @@ From the church's point of view, this all happens automatically after the single
 This pipeline:
 
 - Saves staff time by automating summaries and tagging.
-- Makes it easier for people to **find sermons based on their needs** (e.g., anxiety, marriage, finances).
+- Makes it easier for people to **find sermons based on their needs** (e.g., anxiety, marriage, finances) with 90+ topical tags.
 - Provides **series-level context** so users can understand what an entire series covers.
 - Powers a richer listening experience in the **mobile app** and **podcast platforms**.
+- Reaches **new audiences** through thoughtfully crafted podcast descriptions that resonate with spiritual seekers.
 
 ## Key Technologies
 
@@ -150,7 +157,7 @@ At a high level, the pipeline uses:
 - **AWS S3** for storing audio files and podcast RSS feed
 - **Azure Speech-to-Text** for transcription
 - **Azure Blob Storage** for transcript storage
-- **Azure OpenAI (GPT)** for summarization and tagging
+- **Azure OpenAI (GPT-5-mini)** for summarization, tagging, and description generation
 - **MongoDB** as the single source of truth for enriched sermon data
 
 The detailed implementation may evolve over time, but the core idea remains the same: automatically turn raw audio into rich, searchable content and keep all downstream experiences in sync.

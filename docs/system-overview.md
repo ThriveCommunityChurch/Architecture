@@ -39,7 +39,8 @@ To make that work, we use a small set of focused components:
                       v
             +------------------------+
             | AI Processing Pipeline |
-            | (summary, tags, RSS)   |
+            | (summary, 90+ tags,    |
+            |  waveform, podcast)    |
             +------------------------+
                       |
                       v
@@ -55,12 +56,13 @@ To make that work, we use a small set of focused components:
    Using the **Admin Tool**, staff upload audio and fill in basic details (title, date, series, speaker, etc.).  
    The **Global API** securely stores this information and manages links to the audio file.
 
-3. **AI enhances the content**  
+3. **AI enhances the content**
    The **AI Processing Pipeline**:
-   - Generates a short written summary of the sermon
-   - Assigns topical tags (e.g., "hope", "marriage", "anxiety")
-   - Prepares data used to display audio waveforms
-   - Keeps the podcast feed up to date
+   - Generates a TLDR-style summary (130-180 words) with straightforward, educational tone
+   - Assigns topical tags from 90+ categories (e.g., hope, marriage, anxiety, finances)
+   - Prepares waveform data for audio player visualization
+   - Generates podcast descriptions written for non-church audiences
+   - Creates series-level summaries when a series is complete
 
 4. **Content goes live everywhere**  
    - The **Mobile App** and **Public Website** call the **Global API** to:
@@ -96,9 +98,9 @@ Here is a typical rhythm for a normal week:
    - Attach the message to the right series
    - Enter title, date, speaker, and passage
 4. **Shortly after upload** – The **AI Processing Pipeline** runs automatically to:
-   - Transcribe the message
-   - Generate a short summary and topical tags
-   - Prepare waveform data and update the podcast feed
+   - Transcribe the message using Azure Speech-to-Text
+   - Generate a TLDR-style summary and assign tags from 90+ categories
+   - Prepare waveform data and generate a podcast description for non-church audiences
 5. **Same day** – The **Mobile App** and **Website** automatically show the new message via the **Global API**; podcast apps receive the updated feed.
 
 From the team's perspective, the main manual task is **one upload in the Admin Tool**. Everything else fans out automatically.

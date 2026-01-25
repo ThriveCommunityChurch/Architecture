@@ -41,7 +41,8 @@ This site is intentionally **overview-focused**. For deep technical details (cod
                       v
             +------------------------+
             | AI Processing Pipeline |
-            | (summary, tags, RSS)   |
+            | (summary, 90+ tags,    |
+            |  waveform, podcast)    |
             +------------------------+
                       |
                       v
@@ -75,8 +76,9 @@ At a glance, here is how a sermon moves from the stage to people's phones, brows
    +---------------------------+
    |   AI Processing Pipeline  |
    |  • transcript & summary   |
-   |  • tags & waveform data   |
-   |  • podcast RSS updates    |
+   |  • 90+ topical tags       |
+   |  • waveform & series data |
+   |  • podcast descriptions   |
    +-----------+---------------+
                |
      +---------+-----------------------------+
